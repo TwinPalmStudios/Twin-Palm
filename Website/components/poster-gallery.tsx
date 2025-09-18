@@ -11,7 +11,7 @@ const movies = [
     description: "???",
     posterUrl:
       "https://m.media-amazon.com/images/M/MV5BOTVjNTA0ZWEtNzU2Ny00Njg1LWE1MmEtZTUyZGQzYTVlY2Q5XkEyXkFqcGc@.V1.jpg",
-    url: "/placeholder",
+    url: "/films/coming-soon",
   },
   {
     title: "The Brief Case",
@@ -21,7 +21,7 @@ const movies = [
     description: "Coming Soon..",
     posterUrl:
       "https://m.media-amazon.com/images/M/MV5BOTVjNTA0ZWEtNzU2Ny00Njg1LWE1MmEtZTUyZGQzYTVlY2Q5XkEyXkFqcGc@.V1.jpg",
-    url: "/placeholder",
+    url: "/films/the-brief-case",
   },
   {
     title: "???",
@@ -31,7 +31,7 @@ const movies = [
     description: "???",
     posterUrl:
       "https://m.media-amazon.com/images/M/MV5BOTVjNTA0ZWEtNzU2Ny00Njg1LWE1MmEtZTUyZGQzYTVlY2Q5XkEyXkFqcGc@.V1.jpg",
-    url: "/placeholder",
+    url: "/films/coming-soon",
   },
 ]
 
