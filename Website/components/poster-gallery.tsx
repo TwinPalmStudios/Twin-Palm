@@ -4,31 +4,31 @@ import PosterCard from "./poster-card"
 
 const movies = [
   {
-    title: "Cinematic Vision",
-    year: "2024",
-    runtime: "2h 15m",
-    rating: "PG-13",
-    description: "A groundbreaking film that explores the boundaries of visual storytelling and human emotion.",
+    title: "???",
+    year: "2025",
+    runtime: "???",
+    rating: "???",
+    description: "Coming Soon.",
     posterUrl:
       "https://m.media-amazon.com/images/M/MV5BOTVjNTA0ZWEtNzU2Ny00Njg1LWE1MmEtZTUyZGQzYTVlY2Q5XkEyXkFqcGc@.V1.jpg",
     url: "/placeholder",
   },
   {
-    title: "Twin Palm Legacy",
-    year: "2024",
-    runtime: "1h 58m",
-    rating: "R",
-    description: "An epic tale of ambition, creativity, and the pursuit of cinematic excellence in modern Hollywood.",
+    title: "???",
+    year: "2025",
+    runtime: "???",
+    rating: "???",
+    description: "Coming Soon.",
     posterUrl:
       "https://m.media-amazon.com/images/M/MV5BOTVjNTA0ZWEtNzU2Ny00Njg1LWE1MmEtZTUyZGQzYTVlY2Q5XkEyXkFqcGc@.V1.jpg",
     url: "/placeholder",
   },
   {
-    title: "Studio Dreams",
-    year: "2024",
-    runtime: "2h 32m",
+    title: "Placeholder",
+    year: "2025",
+    runtime: "???",
     rating: "PG-13",
-    description: "A visually stunning masterpiece that captures the essence of filmmaking and artistic vision.",
+    description: "Coming Soon.",
     posterUrl:
       "https://m.media-amazon.com/images/M/MV5BOTVjNTA0ZWEtNzU2Ny00Njg1LWE1MmEtZTUyZGQzYTVlY2Q5XkEyXkFqcGc@.V1.jpg",
     url: "/placeholder",
