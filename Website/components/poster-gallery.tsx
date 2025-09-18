@@ -5,30 +5,30 @@ import PosterCard from "./poster-card"
 const movies = [
   {
     title: "???",
-    year: "2025",
+    year: "2026",
     runtime: "???",
     rating: "???",
-    description: "Coming Soon.",
+    description: "???",
+    posterUrl:
+      "https://m.media-amazon.com/images/M/MV5BOTVjNTA0ZWEtNzU2Ny00Njg1LWE1MmEtZTUyZGQzYTVlY2Q5XkEyXkFqcGc@.V1.jpg",
+    url: "/placeholder",
+  },
+  {
+    title: "The Brief Case",
+    year: "2025",
+    runtime: "TBD",
+    rating: "PG-13",
+    description: "Coming Soon..",
     posterUrl:
       "https://m.media-amazon.com/images/M/MV5BOTVjNTA0ZWEtNzU2Ny00Njg1LWE1MmEtZTUyZGQzYTVlY2Q5XkEyXkFqcGc@.V1.jpg",
     url: "/placeholder",
   },
   {
     title: "???",
-    year: "2025",
+    year: "2026",
     runtime: "???",
     rating: "???",
-    description: "Coming Soon.",
-    posterUrl:
-      "https://m.media-amazon.com/images/M/MV5BOTVjNTA0ZWEtNzU2Ny00Njg1LWE1MmEtZTUyZGQzYTVlY2Q5XkEyXkFqcGc@.V1.jpg",
-    url: "/placeholder",
-  },
-  {
-    title: "Placeholder",
-    year: "2025",
-    runtime: "???",
-    rating: "PG-13",
-    description: "Coming Soon.",
+    description: "???",
     posterUrl:
       "https://m.media-amazon.com/images/M/MV5BOTVjNTA0ZWEtNzU2Ny00Njg1LWE1MmEtZTUyZGQzYTVlY2Q5XkEyXkFqcGc@.V1.jpg",
     url: "/placeholder",
