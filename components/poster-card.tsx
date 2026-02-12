@@ -78,9 +78,9 @@ export default function PosterCard({
         >
           <h3 className="text-xl md:text-2xl font-bold mb-2 text-center">{title}</h3>
           <div className="flex items-center gap-2 mb-3 text-xs md:text-sm opacity-90">
-            <span>{year}</span>
-            <span>•</span>
             <span>{runtime}</span>
+            <span>•</span>
+            <span>{year}</span>
             <span>•</span>
             <span>{rating}</span>
           </div>

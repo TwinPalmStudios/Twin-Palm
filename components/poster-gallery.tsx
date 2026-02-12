@@ -4,11 +4,11 @@ import PosterCard from "./poster-card"
 
 const movies = [
   {
-    title: "???",
+    title: "",
     year: "Winter 2026",
-    runtime: "???",
-    rating: "???",
-    description: "???",
+    runtime: "TBD",
+    rating: "TBD",
+    description: "",
     posterUrl:
       "https://m.media-amazon.com/images/M/MV5BOTVjNTA0ZWEtNzU2Ny00Njg1LWE1MmEtZTUyZGQzYTVlY2Q5XkEyXkFqcGc@.V1.jpg",
     url: "/films/coming-soon",
@@ -18,17 +18,17 @@ const movies = [
     year: "Fall 2026",
     runtime: "TBD",
     rating: "PG-13",
-    description: "Coming Soon..",
+    description: "Coming Soon",
     posterUrl:
       "https://m.media-amazon.com/images/M/MV5BOTVjNTA0ZWEtNzU2Ny00Njg1LWE1MmEtZTUyZGQzYTVlY2Q5XkEyXkFqcGc@.V1.jpg",
     url: "/films/the-brief-case",
   },
   {
-    title: "?",
+    title: "",
     year: "Spring 2027",
-    runtime: "???",
-    rating: "???",
-    description: "???",
+    runtime: "TBD",
+    rating: "TBD",
+    description: "",
     posterUrl:
       "https://m.media-amazon.com/images/M/MV5BOTVjNTA0ZWEtNzU2Ny00Njg1LWE1MmEtZTUyZGQzYTVlY2Q5XkEyXkFqcGc@.V1.jpg",
     url: "/films/coming-soon",
