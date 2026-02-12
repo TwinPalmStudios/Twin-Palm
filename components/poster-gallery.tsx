@@ -5,7 +5,7 @@ import PosterCard from "./poster-card"
 const movies = [
   {
     title: "???",
-    year: "2026",
+    year: "Winter 2026",
     runtime: "???",
     rating: "???",
     description: "???",
@@ -15,7 +15,7 @@ const movies = [
   },
   {
     title: "The Brief Case",
-    year: "2025",
+    year: "Fall 2026",
     runtime: "TBD",
     rating: "PG-13",
     description: "Coming Soon..",
@@ -25,7 +25,7 @@ const movies = [
   },
   {
     title: "?",
-    year: "2026",
+    year: "Spring 2027",
     runtime: "???",
     rating: "???",
     description: "???",
