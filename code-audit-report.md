@@ -60,13 +60,13 @@ typescript: {
 ### 5. **Excessive Placeholder Content**
 **Problem:** Throughout the codebase, there are numerous instances of:
 - "Placeholder Text" in navigation links and buttons
-- "???" in film titles, years, and descriptions
+- "???" in Movie titles, years, and descriptions
 - Generic Lorem Ipsum style content
 
 **Locations:**
 - `navbar.tsx` - All navigation links say "Placeholder Text"
 - `hero.tsx` - Secondary button says "Placeholder Text"
-- `poster-gallery.tsx` - Two out of three films are marked "???"
+- `poster-gallery.tsx` - Two out of three Movies are marked "???"
 
 **Impact:** Unprofessional appearance, unclear site purpose.
 
@@ -74,8 +74,8 @@ typescript: {
 
 ### 6. **Missing Route Definitions**
 **Problem:** Links point to routes that don't exist:
-- `/films/coming-soon`
-- `/films/the-brief-case`
+- `/Movies/Coming-Soon`
+- `/Movies/The-Brief-Case`
 
 **Solution:** Either create these pages or update the links.
 
@@ -114,13 +114,13 @@ posterUrl: "https://m.media-amazon.com/images/M/MV5BOTVjNTA0ZWEtNzU2Ny00Njg1LWE1
 6. ✅ Create proper poster images
 
 ### Short Term (Medium Priority)
-7. Create missing route pages (`/films/*`)
+7. Create missing route pages (`/Movies/*`)
 8. Add proper metadata and SEO tags
 9. Implement proper error handling
 10. Add loading states for dynamic content
 
 ### Long Term (Low Priority)
-11. Set up proper CMS for film data
+11. Set up proper CMS for Movie data
 12. Add authentication if needed for admin features
 13. Implement contact form functionality
 14. Add blog/news section functionality
@@ -134,7 +134,7 @@ Here's what your final structure should look like:
 ```
 Website/
 ├── app/
-│   ├── films/
+│   ├── Movies/
 │   │   ├── [slug]/
 │   │   │   └── page.tsx
 │   │   └── page.tsx
@@ -159,7 +159,7 @@ Website/
 │   └── utils.ts
 ├── public/
 │   ├── posters/
-│   │   ├── the-brief-case.jpg
+│   │   ├── The-Brief-Case.jpg
 │   │   └── ...
 │   └── favicon.ico
 ├── .gitignore

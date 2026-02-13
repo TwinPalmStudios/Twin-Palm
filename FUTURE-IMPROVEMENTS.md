@@ -6,14 +6,14 @@ Ideas and suggestions for enhancing your Twin Palm Studios website as it grows.
 
 ### Priority 1: Complete Basic Content
 - [ ] Replace all "Placeholder Text" with real content
-- [ ] Add actual film data (titles, descriptions, posters)
+- [ ] Add actual Movie data (titles, descriptions, posters)
 - [ ] Create About page with studio story
 - [ ] Create Contact page with form
 - [ ] Add real social media links
 
 ### Priority 2: Visual Polish
 - [ ] Add custom logo
-- [ ] Source professional film posters
+- [ ] Source professional Movie posters
 - [ ] Add favicon and app icons
 - [ ] Optimize images (compress, correct sizes)
 - [ ] Choose custom color scheme
@@ -23,17 +23,17 @@ Ideas and suggestions for enhancing your Twin Palm Studios website as it grows.
 - [ ] Add Open Graph images
 - [ ] Create sitemap.xml
 - [ ] Set up Google Analytics
-- [ ] Add schema.org markup for films
+- [ ] Add schema.org markup for Movies
 
 ---
 
 ## 🚀 Phase 2: Enhanced Functionality (Week 3-4)
 
-### Individual Film Pages
-Create dynamic film detail pages:
+### Individual Movie Pages
+Create dynamic Movie detail pages:
 
 ```
-app/films/[slug]/page.tsx
+app/Movies/[slug]/page.tsx
 ```
 
 **Features to include:**
@@ -84,7 +84,7 @@ export async function POST(request: Request) {
 
 ## 📱 Phase 3: Enhanced User Experience (Month 2)
 
-### Film Gallery Improvements
+### Movie Gallery Improvements
 - [ ] Add filtering (by year, genre, status)
 - [ ] Add search functionality
 - [ ] Implement pagination or infinite scroll
@@ -140,7 +140,7 @@ Consider integrating a headless CMS:
 - Media library management
 - Scheduled publishing
 
-### Film Database Integration
+### Movie Database Integration
 Pull data from external APIs:
 - TMDB (The Movie Database)
 - OMDB (Open Movie Database)
@@ -209,7 +209,7 @@ Sell merchandise, tickets, or digital content:
 - Square (physical products)
 
 **Products to sell:**
-- Film posters
+- Movie posters
 - Merchandise (t-shirts, etc.)
 - Screening tickets
 - Digital downloads
@@ -238,7 +238,7 @@ export default function Dashboard() {
 
 **Track:**
 - Page views
-- Most viewed films
+- Most viewed Movies
 - Traffic sources
 - Contact form submissions
 - Newsletter signups
@@ -261,7 +261,7 @@ export default async function Page({ params: { lang } }) {
 ## 🎬 Phase 6: Industry Integration
 
 ### Festival Submission Tracking
-Track film festival submissions:
+Track Movie festival submissions:
 - Submission dates
 - Festival status (submitted, accepted, rejected, won)
 - Awards won
@@ -369,17 +369,17 @@ jobs:
 ## 💡 Creative Ideas
 
 ### Interactive Features
-- [ ] 360° film set tours
+- [ ] 360° Movie set tours
 - [ ] Behind-the-scenes video player
 - [ ] Interactive timeline of productions
 - [ ] Cast/crew interactive bios
-- [ ] Mood boards for each film
+- [ ] Mood boards for each Movie
 
 ### Community Features
 - [ ] Fan forum or Discord integration
 - [ ] User reviews/ratings
-- [ ] Film discussion threads
-- [ ] Q&A with filmmakers
+- [ ] Movie discussion threads
+- [ ] Q&A with Moviemakers
 - [ ] Virtual screening rooms
 
 ### Marketing Automation

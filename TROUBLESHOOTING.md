@@ -186,7 +186,7 @@ const nextConfig = {
 posterUrl: "https://m.media-amazon.com/images/..."
 
 // ✅ Local
-posterUrl: "/posters/film-name.jpg"
+posterUrl: "/posters/Movie-name.jpg"
 ```
 
 3. **Verify images exist:**

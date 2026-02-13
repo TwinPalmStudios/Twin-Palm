@@ -86,7 +86,7 @@ Your site still has placeholder content that should be replaced:
 ### In `components/navbar.tsx`
 ```tsx
 // Lines 27-42: Replace "Placeholder Text" with:
-<Link href="/films">Films</Link>
+<Link href="/Movies">Movies</Link>
 <Link href="/about">About</Link>
 <Link href="/contact">Contact</Link>
 
@@ -102,37 +102,37 @@ Your site still has placeholder content that should be replaced:
 
 ### In `components/poster-gallery.tsx`
 ```tsx
-// Lines 6-35: Replace "???" with actual film information
-const movies = [
+// Lines 6-35: Replace "???" with actual Movie information
+const Movies = [
   {
-    title: "Film Title Here",
+    title: "Movie Title Here",
     year: "2025",
     runtime: "120 min",
     rating: "PG-13",
-    description: "Film description here",
-    posterUrl: "/posters/film-name.jpg", // Use your own images
-    url: "/films/film-slug",
+    description: "Movie description here",
+    posterUrl: "/posters/Movie-name.jpg", // Use your own images
+    url: "/Movies/Movie-slug",
   },
-  // ... more films
+  // ... more Movies
 ]
 ```
 
 ## 📝 Creating Additional Pages
 
-To add Films, About, Contact pages:
+To add Movies, About, Contact pages:
 
 1. Create directories:
 ```bash
-mkdir -p app/films app/about app/contact
+mkdir -p app/Movies app/about app/contact
 ```
 
 2. Add page.tsx files:
 ```tsx
-// app/films/page.tsx
-export default function Films() {
+// app/Movies/page.tsx
+export default function Movies() {
   return (
     <div className="container py-24">
-      <h1>Our Films</h1>
+      <h1>Our Movies</h1>
       {/* Your content */}
     </div>
   )
@@ -144,7 +144,7 @@ export default function Films() {
 1. Place images in `/public/posters/`
 2. Update `poster-gallery.tsx`:
 ```tsx
-posterUrl: "/posters/your-film.jpg"
+posterUrl: "/posters/your-Movie.jpg"
 ```
 
 ## 🔧 Development

@@ -19,7 +19,7 @@ export default function HamburgerMenu() {
     }
   }, [isOpen])
 
-  const menuItems = ["Home", "Films", "Contact", "News", "Shop", "About"]
+  const menuItems = ["Home", "Movies", "Contact", "News", "Shop", "About"]
 
   return (
     <>

@@ -17,8 +17,8 @@ This guide will help you replace all placeholder content with your actual Twin P
 
 **Replace With:**
 ```tsx
-<Link href="/films" className="link-hover transition-colors hover:text-primary">
-  Films
+<Link href="/Movies" className="link-hover transition-colors hover:text-primary">
+  Movies
 </Link>
 <Link href="/about" className="link-hover transition-colors hover:text-primary">
   About
@@ -56,11 +56,11 @@ This guide will help you replace all placeholder content with your actual Twin P
 </Button>
 ```
 
-### 3. Film Gallery (`components/poster-gallery.tsx`)
+### 3. Movie Gallery (`components/poster-gallery.tsx`)
 
 **Current Placeholder:**
 ```tsx
-const movies = [
+const Movies = [
   {
     title: "???",
     year: "2026",
@@ -68,7 +68,7 @@ const movies = [
     rating: "???",
     description: "???",
     posterUrl: "https://m.media-amazon.com/images/...",
-    url: "/films/coming-soon",
+    url: "/Movies/Coming-Soon",
   },
   {
     title: "The Brief Case",
@@ -77,7 +77,7 @@ const movies = [
     rating: "PG-13",
     description: "Coming Soon..",
     posterUrl: "https://m.media-amazon.com/images/...",
-    url: "/films/the-brief-case",
+    url: "/Movies/The-Brief-Case",
   },
   {
     title: "?",
@@ -86,22 +86,22 @@ const movies = [
     rating: "???",
     description: "???",
     posterUrl: "https://m.media-amazon.com/images/...",
-    url: "/films/coming-soon",
+    url: "/Movies/Coming-Soon",
   },
 ]
 ```
 
-**Replace With Your Films:**
+**Replace With Your Movies:**
 ```tsx
-const movies = [
+const Movies = [
   {
-    title: "Your First Film Title",
+    title: "Your First Movie Title",
     year: "2024",
     runtime: "105 min",
     rating: "R",
     description: "A gripping thriller about...",
-    posterUrl: "/posters/film-1.jpg",
-    url: "/films/your-first-film",
+    posterUrl: "/posters/Movie-1.jpg",
+    url: "/Movies/your-first-Movie",
   },
   {
     title: "The Brief Case",
@@ -109,17 +109,17 @@ const movies = [
     runtime: "TBD",
     rating: "PG-13",
     description: "An intriguing mystery set in...",
-    posterUrl: "/posters/the-brief-case.jpg",
-    url: "/films/the-brief-case",
+    posterUrl: "/posters/The-Brief-Case.jpg",
+    url: "/Movies/The-Brief-Case",
   },
   {
-    title: "Your Third Film Title",
+    title: "Your Third Movie Title",
     year: "2026",
     runtime: "120 min",
     rating: "PG-13",
     description: "Coming Soon - A story of...",
-    posterUrl: "/posters/film-3.jpg",
-    url: "/films/your-third-film",
+    posterUrl: "/posters/Movie-3.jpg",
+    url: "/Movies/your-third-Movie",
   },
 ]
 ```
@@ -143,11 +143,11 @@ const movies = [
     </ul>
   </div>
   <div>
-    <h3 className="font-semibold mb-4">Films</h3>
+    <h3 className="font-semibold mb-4">Movies</h3>
     <ul className="space-y-2 text-sm">
-      <li><Link href="/films">All Films</Link></li>
-      <li><Link href="/films/upcoming">Upcoming</Link></li>
-      <li><Link href="/films/archive">Archive</Link></li>
+      <li><Link href="/Movies">All Movies</Link></li>
+      <li><Link href="/Movies/upcoming">Upcoming</Link></li>
+      <li><Link href="/Movies/archive">Archive</Link></li>
     </ul>
   </div>
   <div>
@@ -168,7 +168,7 @@ const movies = [
 </div>
 ```
 
-## 🖼️ Adding Film Posters
+## 🖼️ Adding Movie Posters
 
 ### Step 1: Prepare Your Images
 - Format: JPG or PNG
@@ -179,32 +179,32 @@ const movies = [
 ```
 public/
 ├── posters/
-│   ├── the-brief-case.jpg
-│   ├── film-1.jpg
-│   ├── film-2.jpg
-│   └── film-3.jpg
+│   ├── The-Brief-Case.jpg
+│   ├── Movie-1.jpg
+│   ├── Movie-2.jpg
+│   └── Movie-3.jpg
 └── ...
 ```
 
 ### Step 3: Update poster-gallery.tsx
 ```tsx
-posterUrl: "/posters/the-brief-case.jpg"
+posterUrl: "/posters/The-Brief-Case.jpg"
 ```
 
 ## 📄 Creating Page Content
 
-### Films Page (`app/films/page.tsx`)
+### Movies Page (`app/Movies/page.tsx`)
 ```tsx
 import Navbar from "@/components/navbar"
 import Footer from "@/components/footer"
 import PosterGallery from "@/components/poster-gallery"
 
 export const metadata = {
-  title: "Films - Twin Palm Studios",
+  title: "Movies - Twin Palm Studios",
   description: "Explore our collection of cinematic works",
 }
 
-export default function FilmsPage() {
+export default function MoviesPage() {
   return (
     <div className="relative min-h-screen">
       <div className="pointer-events-none fixed inset-0">
@@ -215,7 +215,7 @@ export default function FilmsPage() {
         <Navbar />
         
         <div className="container py-24">
-          <h1 className="text-4xl font-bold mb-8">Our Films</h1>
+          <h1 className="text-4xl font-bold mb-8">Our Movies</h1>
           <p className="text-muted-foreground text-lg mb-12">
             Discover the stories that define Twin Palm Studios
           </p>
@@ -364,10 +364,10 @@ Add your social media links to the footer:
 
 - [ ] Replace navigation links in navbar.tsx
 - [ ] Update hero button text in hero.tsx
-- [ ] Add real film data to poster-gallery.tsx
-- [ ] Add your film poster images to public/posters/
+- [ ] Add real Movie data to poster-gallery.tsx
+- [ ] Add your Movie poster images to public/posters/
 - [ ] Update footer with your contact info and social links
-- [ ] Create Films page (app/films/page.tsx)
+- [ ] Create Movies page (app/Movies/page.tsx)
 - [ ] Create About page (app/about/page.tsx)
 - [ ] Create Contact page (app/contact/page.tsx)
 - [ ] Update metadata in layout.tsx with your SEO info

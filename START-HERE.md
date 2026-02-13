@@ -26,9 +26,9 @@ Welcome to your cleaned and organized Twin Palm Studios website! This documentat
 **[CONTENT-GUIDE.md](CONTENT-GUIDE.md)** - Your content replacement checklist
 - Navbar links
 - Hero section
-- Film gallery
+- Movie gallery
 - Footer information
-- Page templates for Films, About, Contact
+- Page templates for Movies, About, Contact
 
 **Priority:** ⭐⭐⭐ Start here after deployment
 
@@ -78,11 +78,11 @@ Welcome to your cleaned and organized Twin Palm Studios website! This documentat
 3. Update hero section button
 4. Add your email/contact info to footer
 
-**Day 4-5: Film Content**
-1. Gather your film posters
-2. Update film information in poster-gallery.tsx
+**Day 4-5: Movie Content**
+1. Gather your Movie posters
+2. Update Movie information in poster-gallery.tsx
 3. Add poster images to public/posters/
-4. Test film cards on live site
+4. Test Movie cards on live site
 
 **Weekend: Polish**
 1. Add social media links
@@ -93,7 +93,7 @@ Welcome to your cleaned and organized Twin Palm Studios website! This documentat
 ### ✅ Week 2: Pages & Features
 
 **Create Core Pages**
-1. Films page (see CONTENT-GUIDE.md)
+1. Movies page (see CONTENT-GUIDE.md)
 2. About page
 3. Contact page
 
@@ -105,7 +105,7 @@ Welcome to your cleaned and organized Twin Palm Studios website! This documentat
 ### ✅ Month 1: Enhance & Optimize
 
 **Content**
-- Create individual film pages
+- Create individual Movie pages
 - Add news/blog section
 - Build press kit
 
@@ -118,7 +118,7 @@ Welcome to your cleaned and organized Twin Palm Studios website! This documentat
 **Marketing**
 - Share on social media
 - Send to industry contacts
-- Submit to film directories
+- Submit to Movie directories
 
 ---
 
@@ -154,7 +154,7 @@ Welcome to your cleaned and organized Twin Palm Studios website! This documentat
 - Responsive design
 - Dark theme
 - Smooth animations
-- Film gallery
+- Movie gallery
 - Mobile menu
 
 ### ✅ Ready to Deploy
@@ -263,6 +263,6 @@ Your Twin Palm Studios website is:
 
 ---
 
-**Happy filming! 🎬**
+**Happy Movieing! 🎬**
 
 *Last updated: February 2026*

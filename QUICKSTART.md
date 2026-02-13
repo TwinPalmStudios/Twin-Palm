@@ -67,20 +67,20 @@ You've:
 1. **Replace Placeholder Text** - See CONTENT-GUIDE.md
    - Update navbar links
    - Update hero button
-   - Add real film information
+   - Add real Movie information
 
-2. **Add Your Film Posters**
+2. **Add Your Movie Posters**
    - Place images in `public/posters/`
    - Update `components/poster-gallery.tsx`
 
 3. **Create Additional Pages**
-   - Films page: `app/films/page.tsx`
+   - Movies page: `app/Movies/page.tsx`
    - About page: `app/about/page.tsx`
    - Contact page: `app/contact/page.tsx`
 
 ### Medium Term (Next 2 Weeks)
 1. **Enhance Functionality**
-   - Add film detail pages
+   - Add Movie detail pages
    - Create news/blog section
    - Implement contact form
 
@@ -217,4 +217,4 @@ Your site is now:
 
 Just push to GitHub and Vercel handles the rest!
 
-**Happy filming! 🎥**
+**Happy Movieing! 🎥**

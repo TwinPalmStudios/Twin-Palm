@@ -50,7 +50,7 @@ export default function Hero() {
       </div>
       <div className="flex gap-4">
         <Button size="lg" onClick={() => scrollToSection(1)} className="btn-hover cinematic-glow">
-          Explore Films
+          Explore Movies
           <ArrowRight className="ml-2 h-4 w-4" />
         </Button>
         <Button
