@@ -1,7 +1,6 @@
 "use client"
 
 import { Button } from "@/components/ui/button"
-import { ArrowRight } from "lucide-react"
 import { useEffect, useRef } from "react"
 
 export default function Hero() {
@@ -48,17 +47,39 @@ export default function Hero() {
           A new era of cinema
         </p>
       </div>
-      <div className="flex gap-4">
-        <Button size="lg" onClick={() => scrollToSection(1)} className="btn-hover cinematic-glow">
+
+      <div className="flex flex-col sm:flex-row gap-4 sm:gap-6">
+        {/* Primary CTA: narrower */}
+        <Button
+          size="lg"
+          onClick={() => scrollToSection(1)}
+          className="
+            bg-primary text-primary-foreground border border-primary
+            hover:bg-transparent hover:text-primary hover:border-primary/60
+            hover:shadow-[0_0_20px_rgba(var(--primary-rgb),0.4)]
+            hover:brightness-110
+            transition-all duration-300 ease-out
+            font-semibold
+            rounded-md px-6 py-5 min-w-[160px]
+          "
+        >
           Explore Movies
-          <ArrowRight className="ml-2 h-4 w-4" />
         </Button>
+
+        {/* Secondary: narrower */}
         <Button
           variant="outline"
           size="lg"
           onClick={() => scrollToSection(2)}
-          className="btn-hover"
-          data-variant="outline"
+          className="
+            border border-primary/60 text-primary bg-transparent
+            hover:bg-primary hover:text-primary-foreground hover:border-primary
+            hover:shadow-[0_0_20px_rgba(var(--primary-rgb),0.4)]
+            hover:brightness-110
+            transition-all duration-300 ease-out
+            font-medium
+            rounded-md px-6 py-5 min-w-[160px]
+          "
         >
           Placeholder Text
         </Button>

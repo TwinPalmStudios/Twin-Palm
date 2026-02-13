@@ -2,10 +2,11 @@
 
 import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
+import Link from "next/link"
+import { cn } from "@/lib/utils"
 
 export default function HamburgerMenu() {
   const [isOpen, setIsOpen] = useState(false)
-  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
 
   useEffect(() => {
     if (isOpen) {
@@ -19,7 +20,14 @@ export default function HamburgerMenu() {
     }
   }, [isOpen])
 
-  const menuItems = ["Home", "Movies", "Contact", "News", "Shop", "About"]
+  const menuItems = [
+    { label: "Home", path: "/" },
+    { label: "Movies", path: "/movies" },
+    { label: "Contact", path: "/contact" },
+    { label: "News", path: "/news" },
+    { label: "Shop", path: "/shop" },
+    { label: "About", path: "/about" },
+  ]
 
   return (
     <>
@@ -51,52 +59,53 @@ export default function HamburgerMenu() {
 
       {/* Menu Overlay */}
       <div
-        className={`fixed inset-0 z-50 transition-all duration-1000 ease-out ${
-          isOpen ? "opacity-100 visible" : "opacity-0 invisible"
-        }`}
+        className={cn(
+          "fixed inset-0 z-50 transition-all duration-500 ease-out",
+          isOpen ? "opacity-100 visible" : "opacity-0 invisible pointer-events-none"
+        )}
       >
-        <div
-          className={`absolute inset-0 transition-all duration-1000 ease-out ${
-            isOpen ? "hamburger-blur-open" : "hamburger-blur-closed"
-          }`}
-        />
+        {/* Background - matches navbar blur + subtle tint for cinematic depth */}
+        <div className="absolute inset-0 bg-background/95 backdrop-blur-xl" />
 
-        <div
-          className={`absolute inset-0 bg-gradient-to-br from-background/95 via-background/90 to-background/85 transition-all duration-1000 ease-out ${
-            isOpen ? "opacity-100" : "opacity-0"
-          }`}
-        />
-
-        {/* Menu Content */}
-        <div className="relative z-10 flex items-center justify-center min-h-screen">
-          <nav className="text-center">
-            <ul className="space-y-6">
+        {/* Content */}
+        <div className="relative z-10 flex items-center justify-center min-h-screen px-6">
+          <nav className="w-full max-w-2xl">
+            <ul className="space-y-8">
               {menuItems.map((item, index) => (
-                <li key={item}>
-                  <a
-                    href="#"
-                    onMouseEnter={() => setHoveredIndex(index)}
-                    onMouseLeave={() => setHoveredIndex(null)}
-                    className={`block text-2xl md:text-3xl font-light transition-all duration-700 ease-out hover:scale-110 ${
-                      isOpen ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-                    } ${hoveredIndex !== null && hoveredIndex !== index ? "text-white/30 blur-sm" : "text-white"}`}
-                    style={{
-                      transitionDelay: isOpen ? `${index * 100}ms` : "0ms",
-                      fontFamily: "inherit",
-                    }}
-                  >
-                    {item}
-                  </a>
-                  {index < menuItems.length - 1 && (
-                    <div
-                      className={`w-1.5 h-1.5 bg-white rounded-full mx-auto mt-4 transition-all duration-700 ease-out ${
-                        isOpen ? "opacity-100 scale-100" : "opacity-0 scale-0"
-                      } ${hoveredIndex !== null && hoveredIndex !== index ? "opacity-30 blur-sm" : "opacity-100"}`}
-                      style={{
-                        transitionDelay: isOpen ? `${index * 100 + 50}ms` : "0ms",
-                      }}
-                    />
+                <li
+                  key={item.label}
+                  className={cn(
+                    "opacity-0 translate-y-8 transition-all duration-700 ease-out",
+                    isOpen && "opacity-100 translate-y-0"
                   )}
+                  style={{
+                    transitionDelay: isOpen ? `${index * 80 + 150}ms` : "0ms",
+                  }}
+                >
+                  <Link
+                    href={item.path}
+                    onClick={() => setIsOpen(false)}
+                    className="block"
+                  >
+                    <div
+                      className={cn(
+                        // Exact same base style as desktop navbar links
+                        "inline-flex items-center justify-center",
+                        "px-8 py-6 text-lg md:text-2xl font-medium tracking-wider",
+                        "text-foreground",
+                        "border border-border/60 rounded-2xl",
+                        "transition-all duration-300 ease-out",
+                        "hover:border-primary hover:bg-primary/10 hover:text-primary",
+                        "hover:scale-105 hover:shadow-lg",
+                        "active:scale-95",
+                        "focus:outline-none focus:ring-2 focus:ring-primary/50 focus:ring-offset-2",
+                        // Full-width centered block for mobile menu
+                        "w-full"
+                      )}
+                    >
+                      {item.label}
+                    </div>
+                  </Link>
                 </li>
               ))}
             </ul>

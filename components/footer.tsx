@@ -8,14 +8,24 @@ export default function Footer() {
           <h2 className="font-bold">Twin Palm</h2>
           <p className="text-sm text-muted-foreground">A new era of cinema.</p>
         </div>
+
         <div className="grid flex-1 grid-cols-2 gap-12 sm:grid-cols-3">
+          {/* Column 1 */}
           <div className="space-y-4">
             <h3 className="text-sm font-medium">Placeholder Text</h3>
-            <ul className="space-y-3 text-sm">
+            <ul className="space-y-2 text-sm">
               <li>
                 <Link
                   href="#"
-                  className="text-muted-foreground transition-colors hover:text-primary hover:scale-105 transform duration-200 inline-block"
+                  className="
+                    text-muted-foreground
+                    hover:text-primary
+                    relative inline-block
+                    after:content-[''] after:absolute after:left-0 after:bottom-[-2px]
+                    after:w-0 after:h-[1.5px] after:bg-primary
+                    after:transition-all after:duration-300 after:ease-out
+                    hover:after:w-full
+                  "
                 >
                   Placeholder Text
                 </Link>
@@ -23,20 +33,38 @@ export default function Footer() {
               <li>
                 <Link
                   href="#"
-                  className="text-muted-foreground transition-colors hover:text-primary hover:scale-105 transform duration-200 inline-block"
+                  className="
+                    text-muted-foreground
+                    hover:text-primary
+                    relative inline-block
+                    after:content-[''] after:absolute after:left-0 after:bottom-[-2px]
+                    after:w-0 after:h-[1.5px] after:bg-primary
+                    after:transition-all after:duration-300 after:ease-out
+                    hover:after:w-full
+                  "
                 >
                   Placeholder Text
                 </Link>
               </li>
             </ul>
           </div>
+
+          {/* Column 2 */}
           <div className="space-y-4">
             <h3 className="text-sm font-medium">Placeholder Text</h3>
-            <ul className="space-y-3 text-sm">
+            <ul className="space-y-2 text-sm">
               <li>
                 <Link
                   href="#"
-                  className="text-muted-foreground transition-colors hover:text-primary hover:scale-105 transform duration-200 inline-block"
+                  className="
+                    text-muted-foreground
+                    hover:text-primary
+                    relative inline-block
+                    after:content-[''] after:absolute after:left-0 after:bottom-[-2px]
+                    after:w-0 after:h-[1.5px] after:bg-primary
+                    after:transition-all after:duration-300 after:ease-out
+                    hover:after:w-full
+                  "
                 >
                   Placeholder Text
                 </Link>
@@ -44,21 +72,32 @@ export default function Footer() {
               <li>
                 <Link
                   href="#"
-                  className="text-muted-foreground transition-colors hover:text-primary hover:scale-105 transform duration-200 inline-block"
+                  className="
+                    text-muted-foreground
+                    hover:text-primary
+                    relative inline-block
+                    after:content-[''] after:absolute after:left-0 after:bottom-[-2px]
+                    after:w-0 after:h-[1.5px] after:bg-primary
+                    after:transition-all after:duration-300 after:ease-out
+                    hover:after:w-full
+                  "
                 >
                   Placeholder Text
                 </Link>
               </li>
             </ul>
           </div>
+
+          {/* Column 3 */}
           <div className="space-y-4">
             <h3 className="text-sm font-medium">Placeholder Text</h3>
-            <div className="flex space-x-4">
-              <span className="text-muted-foreground text-sm">Placeholder Text</span>
+            <div className="text-sm">
+              <span className="text-muted-foreground">Placeholder Text</span>
             </div>
           </div>
         </div>
       </div>
+
       <div className="footer-blur-full border-t py-6">
         <div className="container">
           <p className="text-center text-sm text-muted-foreground">
