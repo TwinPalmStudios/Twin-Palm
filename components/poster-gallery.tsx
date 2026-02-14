@@ -22,9 +22,65 @@ export default function PosterGallery() {
   const [isDragging, setIsDragging] = useState(false)
   const [isHovered, setIsHovered] = useState(false)
   const [isAutoplayPaused, setIsAutoplayPaused] = useState(false)
+  const [hoveredMovie, setHoveredMovie] = useState<string | null>(null)
   const [dragOffset, setDragOffset] = useState(0)
+  const [currentBg, setCurrentBg] = useState("")
+  const [nextBg, setNextBg] = useState("")
+  const [showNext, setShowNext] = useState(false)
   const dragStartX = useRef(0)
   const containerRef = useRef<HTMLDivElement>(null)
+
+  // Generate color palette from movie title
+  const getMovieColors = (title: string) => {
+    // Simple hash function
+    let hash = 0
+    for (let i = 0; i < title.length; i++) {
+      hash = title.charCodeAt(i) + ((hash << 5) - hash)
+    }
+    
+    // Generate hue from hash (0-360)
+    const hue1 = Math.abs(hash % 360)
+    const hue2 = (hue1 + 60) % 360 // Complementary hue
+    
+    // Dark, saturated colors for cinematic feel
+    const color1 = `hsl(${hue1}, 60%, 15%)`
+    const color2 = `hsl(${hue2}, 50%, 20%)`
+    
+    return `linear-gradient(135deg, ${color1}, ${color2})`
+  }
+
+  // Get target gradient based on hover or center poster
+  const targetGradient = useMemo(() => {
+    if (hoveredMovie) {
+      return getMovieColors(hoveredMovie)
+    }
+    const centerMovie = featuredMovies[currentIndex % featuredMovies.length]
+    return centerMovie ? getMovieColors(centerMovie.title) : 'linear-gradient(135deg, rgb(20, 20, 30), rgb(40, 30, 50))'
+  }, [currentIndex, featuredMovies, hoveredMovie])
+
+  // Crossfade effect when target changes
+  useEffect(() => {
+    if (targetGradient === currentBg) return
+    
+    // Set next background
+    setNextBg(targetGradient)
+    setShowNext(true)
+    
+    // After transition, swap them
+    const timeout = setTimeout(() => {
+      setCurrentBg(targetGradient)
+      setShowNext(false)
+    }, 1000) // Match transition duration
+    
+    return () => clearTimeout(timeout)
+  }, [targetGradient])
+
+  // Initialize first background
+  useEffect(() => {
+    if (!currentBg) {
+      setCurrentBg(targetGradient)
+    }
+  }, [targetGradient])
 
   // Keyboard navigation
   useEffect(() => {
@@ -72,12 +128,9 @@ export default function PosterGallery() {
     if (!isDragging) return
     setIsDragging(false)
 
-    // Threshold for switching (100px drag = switch)
     if (dragOffset > 100) {
-      // Dragged right, go to previous
       setCurrentIndex((prev) => prev - 1)
     } else if (dragOffset < -100) {
-      // Dragged left, go to next
       setCurrentIndex((prev) => prev + 1)
     }
 
@@ -88,121 +141,138 @@ export default function PosterGallery() {
     return null
   }
 
-  // Create a large extended array for infinite scrolling
   const extendedMovies = Array.from({ length: featuredMovies.length * 20 }, (_, i) => 
     featuredMovies[i % featuredMovies.length]
   )
 
   return (
-    <section className="relative w-full py-16 overflow-hidden bg-gradient-to-b from-background via-muted/20 to-background">
-      <div className="container px-4 md:px-6">
-        <div className="text-center mb-10">
-          <h2 className="text-4xl md:text-5xl font-bold tracking-tight">Featured Films</h2>
-          <p className="mt-4 text-lg text-muted-foreground">Our latest and upcoming cinematic works</p>
-        </div>
+    <>
+      {/* Crossfade Background Layers */}
+      <div 
+        className="fixed inset-0 -z-10"
+        style={{
+          background: currentBg,
+        }}
+      />
+      <div 
+        className="fixed inset-0 -z-10 transition-opacity duration-1000 ease-in-out"
+        style={{
+          background: nextBg,
+          opacity: showNext ? 1 : 0,
+        }}
+      />
+      <div className="fixed inset-0 -z-10 bg-gradient-to-b from-background/60 via-background/40 to-background pointer-events-none" />
 
-        {/* Carousel Container */}
-        <div 
-          ref={containerRef}
-          className="relative flex items-center justify-center h-[420px] md:h-[520px] cursor-grab active:cursor-grabbing select-none" 
-          style={{ perspective: '1000px' }}
-          onMouseEnter={() => setIsHovered(true)}
-          onMouseLeave={() => setIsHovered(false)}
-          onMouseDown={(e) => handleDragStart(e.clientX)}
-          onMouseMove={(e) => handleDragMove(e.clientX)}
-          onMouseUp={handleDragEnd}
-          onTouchStart={(e) => handleDragStart(e.touches[0].clientX)}
-          onTouchMove={(e) => handleDragMove(e.touches[0].clientX)}
-          onTouchEnd={handleDragEnd}
-        >
-          <div className="relative w-full max-w-6xl h-full flex items-center justify-center">
-            {extendedMovies.map((movie, index) => {
-              // Calculate position relative to current center
-              const position = index - (currentIndex + featuredMovies.length * 10)
-              
-              // Determine if this card should be visible
-              const isVisible = position >= -1 && position <= 1
-              
-              // Get width based on position
-              const getWidth = () => {
-                return position === 0 ? 'w-60 md:w-72' : 'w-56 md:w-64'
-              }
-              
-              // Get rotation for PosterCard
-              const getRotation = () => {
-                if (position === 0) return 0
-                if (position === -1) return 12
-                if (position === 1) return -12
-                return 0
-              }
-              
-              // Calculate transform - position with drag offset
-              const getTransform = () => {
-                const dragAdjustment = isDragging ? dragOffset * 0.5 : 0
+      <section className="relative w-full py-16 overflow-hidden">
+        <div className="container px-4 md:px-6 relative z-10">
+          <div className="text-center mb-10">
+            <h2 className="text-4xl md:text-5xl font-bold tracking-tight">Featured Films</h2>
+            <p className="mt-4 text-lg text-muted-foreground">Our latest and upcoming cinematic works</p>
+          </div>
+
+          {/* Carousel Container */}
+          <div 
+            ref={containerRef}
+            className="relative flex items-center justify-center h-[420px] md:h-[520px] cursor-grab active:cursor-grabbing select-none" 
+            style={{ perspective: '1000px' }}
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
+            onMouseDown={(e) => handleDragStart(e.clientX)}
+            onMouseMove={(e) => handleDragMove(e.clientX)}
+            onMouseUp={handleDragEnd}
+            onTouchStart={(e) => handleDragStart(e.touches[0].clientX)}
+            onTouchMove={(e) => handleDragMove(e.touches[0].clientX)}
+            onTouchEnd={handleDragEnd}
+          >
+            <div className="relative w-full max-w-6xl h-full flex items-center justify-center">
+              {extendedMovies.map((movie, index) => {
+                const position = index - (currentIndex + featuredMovies.length * 10)
+                const isVisible = position >= -1 && position <= 1
                 
-                if (position === 0) {
-                  return `translateX(${dragAdjustment}px)`
-                } else if (position === -1) {
-                  return `translateX(calc(-120% + ${dragAdjustment}px))`
-                } else if (position === 1) {
-                  return `translateX(calc(120% + ${dragAdjustment}px))`
-                } else if (position < -1) {
-                  return `translateX(calc(-200% + ${dragAdjustment}px))`
-                } else {
-                  return `translateX(calc(200% + ${dragAdjustment}px))`
+                const getWidth = () => {
+                  return position === 0 ? 'w-60 md:w-72' : 'w-56 md:w-64'
                 }
-              }
+                
+                const getRotation = () => {
+                  if (position === 0) return 0
+                  if (position === -1) return 12
+                  if (position === 1) return -12
+                  return 0
+                }
+                
+                const getTransform = () => {
+                  const dragAdjustment = isDragging ? dragOffset * 0.5 : 0
+                  
+                  if (position === 0) {
+                    return `translateX(${dragAdjustment}px)`
+                  } else if (position === -1) {
+                    return `translateX(calc(-120% + ${dragAdjustment}px))`
+                  } else if (position === 1) {
+                    return `translateX(calc(120% + ${dragAdjustment}px))`
+                  } else if (position < -1) {
+                    return `translateX(calc(-200% + ${dragAdjustment}px))`
+                  } else {
+                    return `translateX(calc(200% + ${dragAdjustment}px))`
+                  }
+                }
 
-              return (
-                <div
-                  key={`${movie.title}-${index}`}
-                  className={`absolute ${getWidth()} transition-all ${isDragging ? 'duration-0' : 'duration-700 ease-out'}`}
-                  style={{
-                    transform: getTransform(),
-                    transformStyle: 'preserve-3d',
-                    opacity: isVisible ? 1 : 0,
-                    zIndex: position === 0 ? 20 : 10 - Math.abs(position),
-                    pointerEvents: isVisible ? 'auto' : 'none',
-                  }}
-                >
-                  <PosterCard
-                    {...movie}
-                    initialRotateY={getRotation()}
-                    isCenter={position === 0}
-                  />
-                </div>
-              )
-            })}
+                return (
+                  <div
+                    key={`${movie.title}-${index}`}
+                    className={`absolute ${getWidth()} transition-all ${isDragging ? 'duration-0' : 'duration-700 ease-out'}`}
+                    style={{
+                      transform: getTransform(),
+                      transformStyle: 'preserve-3d',
+                      opacity: isVisible ? 1 : 0,
+                      zIndex: position === 0 ? 20 : 10 - Math.abs(position),
+                      pointerEvents: isVisible ? 'auto' : 'none',
+                    }}
+                    onMouseEnter={() => setHoveredMovie(movie.title)}
+                    onMouseLeave={() => setHoveredMovie(null)}
+                  >
+                    <PosterCard
+                      {...movie}
+                      initialRotateY={getRotation()}
+                      isCenter={position === 0}
+                    />
+                  </div>
+                )
+              })}
+            </div>
+          </div>
+
+          {/* Navigation Dots */}
+          <div className="flex justify-center gap-2 mt-6">
+            {featuredMovies.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => setCurrentIndex((prev) => {
+                  const currentMod = prev % featuredMovies.length
+                  const diff = (index - currentMod + featuredMovies.length) % featuredMovies.length
+                  return prev + diff
+                })}
+                className={`h-2 rounded-full transition-all duration-500 ease-out ${
+                  index === currentIndex % featuredMovies.length
+                    ? 'bg-primary w-8'
+                    : 'bg-muted-foreground/30 w-2 hover:bg-muted-foreground/50'
+                }`}
+                aria-label={`Go to slide ${index + 1}`}
+              />
+            ))}
+          </div>
+
+          <div className="text-center mt-6">
+            <a href="/movies" className="text-primary hover:underline text-lg">
+              View All Films →
+            </a>
+          </div>
+
+          {/* Keyboard hint - simple text */}
+          <div className="mt-6 text-center text-xs text-muted-foreground/40">
+            <span>← → to navigate • ESC to {isAutoplayPaused ? 'play' : 'pause'}</span>
           </div>
         </div>
-
-        {/* Navigation Dots */}
-        <div className="flex justify-center gap-2 mt-6">
-          {featuredMovies.map((_, index) => (
-            <button
-              key={index}
-              onClick={() => setCurrentIndex((prev) => {
-                // Jump to this index while maintaining forward direction
-                const currentMod = prev % featuredMovies.length
-                const diff = (index - currentMod + featuredMovies.length) % featuredMovies.length
-                return prev + diff
-              })}
-              className={`h-2 rounded-full transition-all duration-500 ease-out ${
-                index === currentIndex % featuredMovies.length
-                  ? 'bg-primary w-8'
-                  : 'bg-muted-foreground/30 w-2 hover:bg-muted-foreground/50'
-              }`}
-              aria-label={`Go to slide ${index + 1}`}
-            />
-          ))}
-        </div>
-
-        <div className="text-center mt-6">
-          <a href="/movies" className="text-primary hover:underline text-lg">
-            View All Films →
-          </a>
-        </div>
-      </div>
-    </section>
+      </section>
+    </>
   )
 }
