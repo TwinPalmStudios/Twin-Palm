@@ -3,10 +3,10 @@
 import { useMemo, useState, useEffect, useRef } from "react"
 import PosterCard from "./poster-card"
 import { movies } from "@/lib/movies"
+import ColorThief from "colorthief"
 
 export default function PosterGallery() {
-  // CONFIGURE THIS: Change to 3, 5, 10, or movies.length for all movies
-  const NUM_FEATURED = 5 // <-- Change this number!
+  const NUM_FEATURED = 5
 
   const featuredMovies = useMemo(() => {
     return [...movies]
@@ -22,95 +22,180 @@ export default function PosterGallery() {
   const [isDragging, setIsDragging] = useState(false)
   const [isHovered, setIsHovered] = useState(false)
   const [isAutoplayPaused, setIsAutoplayPaused] = useState(false)
+  const [isTabVisible, setIsTabVisible] = useState(true)
   const [hoveredMovie, setHoveredMovie] = useState<string | null>(null)
   const [dragOffset, setDragOffset] = useState(0)
-  const [currentBg, setCurrentBg] = useState("")
-  const [nextBg, setNextBg] = useState("")
-  const [showNext, setShowNext] = useState(false)
   const dragStartX = useRef(0)
   const containerRef = useRef<HTMLDivElement>(null)
 
-  // Generate color palette from movie title
-  const getMovieColors = (title: string) => {
-    // Simple hash function
+  const [movieHues, setMovieHues] = useState<Record<string, { hue1: number; hue2: number }>>({})
+
+  // RGB → HSL (h in 0–360)
+  const rgbToHsl = (r: number, g: number, b: number): { h: number; s: number; l: number } => {
+    r /= 255
+    g /= 255
+    b /= 255
+    const max = Math.max(r, g, b)
+    const min = Math.min(r, g, b)
+    let h = 0
+    let s = 0
+    const l = (max + min) / 2
+
+    if (max !== min) {
+      const d = max - min
+      s = l > 0.5 ? d / (2 - max - min) : d / (max + min)
+      switch (max) {
+        case r:
+          h = (g - b) / d + (g < b ? 6 : 0)
+          break
+        case g:
+          h = (b - r) / d + 2
+          break
+        case b:
+          h = (r - g) / d + 4
+          break
+      }
+      h /= 6
+    }
+    return { h: h * 360, s, l }
+  }
+
+  // Title-hash fallback
+  const getFallbackHues = (title: string) => {
     let hash = 0
     for (let i = 0; i < title.length; i++) {
       hash = title.charCodeAt(i) + ((hash << 5) - hash)
     }
-    
-    // Generate hue from hash (0-360)
     const hue1 = Math.abs(hash % 360)
-    const hue2 = (hue1 + 60) % 360 // Complementary hue
-    
-    // Dark, saturated colors for cinematic feel
-    const color1 = `hsl(${hue1}, 60%, 15%)`
-    const color2 = `hsl(${hue2}, 50%, 20%)`
-    
-    return `linear-gradient(135deg, ${color1}, ${color2})`
+    const hue2 = (hue1 + 80) % 360
+    return { hue1, hue2 }
   }
 
-  // Get target gradient based on hover or center poster
-  const targetGradient = useMemo(() => {
+  // Extract colors from posters
+  useEffect(() => {
+    featuredMovies.forEach((movie) => {
+      const img = new Image()
+      img.src = movie.posterUrl
+
+      img.onload = () => {
+        try {
+          const colorThief = new ColorThief()
+          const palette = colorThief.getPalette(img, 10)
+
+          if (palette && palette.length >= 1) {
+            const colorInfos = palette.map(([r, g, b]: [number, number, number]) => {
+              const { h, s, l } = rgbToHsl(r, g, b)
+              return { h, s, l }
+            })
+
+            // Prefer vibrant colors
+            let vibrant = colorInfos.filter((c) => c.s > 0.35)
+
+            let hue1: number
+            let hue2: number
+
+            if (vibrant.length === 0) {
+              hue1 = Math.round(colorInfos[0].h)
+              hue2 = (hue1 + 80) % 360
+            } else {
+              vibrant.sort((a, b) => b.s - a.s)
+              hue1 = Math.round(vibrant[0].h)
+
+              if (vibrant.length === 1) {
+                hue2 = (hue1 + 90) % 360
+              } else {
+                let maxDist = 0
+                let bestHue = vibrant[1].h
+                for (const c of vibrant.slice(1)) {
+                  const diff = Math.abs(vibrant[0].h - c.h)
+                  const dist = Math.min(diff, 360 - diff)
+                  if (dist > maxDist) {
+                    maxDist = dist
+                    bestHue = c.h
+                  }
+                }
+                hue2 = Math.round(bestHue)
+              }
+            }
+
+            setMovieHues((prev) => ({
+              ...prev,
+              [movie.title]: { hue1, hue2 },
+            }))
+          } else {
+            setMovieHues((prev) => ({
+              ...prev,
+              [movie.title]: getFallbackHues(movie.title),
+            }))
+          }
+        } catch (err) {
+          console.error(`Color extraction failed for ${movie.title}:`, err)
+          setMovieHues((prev) => ({
+            ...prev,
+            [movie.title]: getFallbackHues(movie.title),
+          }))
+        }
+      }
+
+      img.onerror = () => {
+        console.error(`Failed to load poster: ${movie.posterUrl}`)
+        setMovieHues((prev) => ({
+          ...prev,
+          [movie.title]: getFallbackHues(movie.title),
+        }))
+      }
+    })
+  }, [featuredMovies])
+
+  // Current hues
+  const currentHues = useMemo(() => {
+    let title: string | undefined
     if (hoveredMovie) {
-      return getMovieColors(hoveredMovie)
+      title = hoveredMovie
+    } else {
+      const centerMovie = featuredMovies[currentIndex % featuredMovies.length]
+      title = centerMovie?.title
     }
-    const centerMovie = featuredMovies[currentIndex % featuredMovies.length]
-    return centerMovie ? getMovieColors(centerMovie.title) : 'linear-gradient(135deg, rgb(20, 20, 30), rgb(40, 30, 50))'
-  }, [currentIndex, featuredMovies, hoveredMovie])
 
-  // Crossfade effect when target changes
-  useEffect(() => {
-    if (targetGradient === currentBg) return
-    
-    // Set next background
-    setNextBg(targetGradient)
-    setShowNext(true)
-    
-    // After transition, swap them
-    const timeout = setTimeout(() => {
-      setCurrentBg(targetGradient)
-      setShowNext(false)
-    }, 1000) // Match transition duration
-    
-    return () => clearTimeout(timeout)
-  }, [targetGradient])
-
-  // Initialize first background
-  useEffect(() => {
-    if (!currentBg) {
-      setCurrentBg(targetGradient)
+    if (title && movieHues[title]) {
+      return movieHues[title]
     }
-  }, [targetGradient])
+    if (title) {
+      return getFallbackHues(title)
+    }
+    return { hue1: 260, hue2: 340 }
+  }, [currentIndex, featuredMovies, hoveredMovie, movieHues])
 
-  // Keyboard navigation
+  // Visibility, keyboard, autoplay, drag – unchanged
+  useEffect(() => {
+    setIsTabVisible(!document.hidden)
+    const handleVisibilityChange = () => setIsTabVisible(!document.hidden)
+    document.addEventListener("visibilitychange", handleVisibilityChange)
+    return () => document.removeEventListener("visibilitychange", handleVisibilityChange)
+  }, [])
+
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'ArrowLeft') {
+      if (e.key === "ArrowLeft") {
         e.preventDefault()
         setCurrentIndex((prev) => prev - 1)
-      } else if (e.key === 'ArrowRight') {
+      } else if (e.key === "ArrowRight") {
         e.preventDefault()
         setCurrentIndex((prev) => prev + 1)
-      } else if (e.key === 'Escape') {
+      } else if (e.key === "Escape") {
         e.preventDefault()
         setIsAutoplayPaused((prev) => !prev)
       }
     }
-
-    window.addEventListener('keydown', handleKeyDown)
-    return () => window.removeEventListener('keydown', handleKeyDown)
+    window.addEventListener("keydown", handleKeyDown)
+    return () => window.removeEventListener("keydown", handleKeyDown)
   }, [])
 
-  // Auto-rotation
   useEffect(() => {
-    if (isDragging || isHovered || isAutoplayPaused) return
-
-    const interval = setInterval(() => {
-      setCurrentIndex((prev) => prev + 1)
-    }, 4000)
-
+    if (isDragging || isHovered || isAutoplayPaused || !isTabVisible) return
+    const interval = setInterval(() => setCurrentIndex((prev) => prev + 1), 4000)
     return () => clearInterval(interval)
-  }, [featuredMovies.length, isDragging, isHovered, isAutoplayPaused])
+  }, [featuredMovies.length, isDragging, isHovered, isAutoplayPaused, isTabVisible])
 
   const handleDragStart = (clientX: number) => {
     setIsDragging(true)
@@ -127,39 +212,25 @@ export default function PosterGallery() {
   const handleDragEnd = () => {
     if (!isDragging) return
     setIsDragging(false)
-
-    if (dragOffset > 100) {
-      setCurrentIndex((prev) => prev - 1)
-    } else if (dragOffset < -100) {
-      setCurrentIndex((prev) => prev + 1)
-    }
-
+    if (dragOffset > 100) setCurrentIndex((prev) => prev - 1)
+    else if (dragOffset < -100) setCurrentIndex((prev) => prev + 1)
     setDragOffset(0)
   }
 
-  if (featuredMovies.length === 0) {
-    return null
-  }
+  if (featuredMovies.length === 0) return null
 
-  const extendedMovies = Array.from({ length: featuredMovies.length * 20 }, (_, i) => 
-    featuredMovies[i % featuredMovies.length]
-  )
+  const visibleRange = Array.from({ length: 7 }, (_, i) => currentIndex + i - 3)
 
   return (
     <>
-      {/* Crossfade Background Layers */}
-      <div 
-        className="fixed inset-0 -z-10"
+      {/* Dynamic background – flipped direction (315deg = 135deg + 180deg) to reverse color sides */}
+      <div
+        className="fixed inset-0 -z-10 transition-all duration-[1200ms] ease-in-out"
         style={{
-          background: currentBg,
-        }}
-      />
-      <div 
-        className="fixed inset-0 -z-10 transition-opacity duration-1000 ease-in-out"
-        style={{
-          background: nextBg,
-          opacity: showNext ? 1 : 0,
-        }}
+          background: `linear-gradient(315deg, hsl(var(--hue1), 95%, 12%), hsl(var(--hue2), 85%, 18%))`,
+          "--hue1": currentHues.hue1,
+          "--hue2": currentHues.hue2,
+        } as any}
       />
       <div className="fixed inset-0 -z-10 bg-gradient-to-b from-background/60 via-background/40 to-background pointer-events-none" />
 
@@ -170,11 +241,10 @@ export default function PosterGallery() {
             <p className="mt-4 text-lg text-muted-foreground">Our latest and upcoming cinematic works</p>
           </div>
 
-          {/* Carousel Container */}
-          <div 
+          <div
             ref={containerRef}
-            className="relative flex items-center justify-center h-[420px] md:h-[520px] cursor-grab active:cursor-grabbing select-none" 
-            style={{ perspective: '1000px' }}
+            className="relative flex items-center justify-center h-[420px] md:h-[520px] cursor-grab active:cursor-grabbing select-none"
+            style={{ perspective: "1000px" }}
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
             onMouseDown={(e) => handleDragStart(e.clientX)}
@@ -185,76 +255,65 @@ export default function PosterGallery() {
             onTouchEnd={handleDragEnd}
           >
             <div className="relative w-full max-w-6xl h-full flex items-center justify-center">
-              {extendedMovies.map((movie, index) => {
-                const position = index - (currentIndex + featuredMovies.length * 10)
+              {visibleRange.map((absoluteIndex) => {
+                const movieIndex =
+                  ((absoluteIndex % featuredMovies.length) + featuredMovies.length) % featuredMovies.length
+                const movie = featuredMovies[movieIndex]
+                const position = absoluteIndex - currentIndex
                 const isVisible = position >= -1 && position <= 1
-                
-                const getWidth = () => {
-                  return position === 0 ? 'w-60 md:w-72' : 'w-56 md:w-64'
-                }
-                
+
+                const getWidth = () => (position === 0 ? "w-60 md:w-72" : "w-56 md:w-64")
+
                 const getRotation = () => {
                   if (position === 0) return 0
                   if (position === -1) return 12
                   if (position === 1) return -12
                   return 0
                 }
-                
+
                 const getTransform = () => {
                   const dragAdjustment = isDragging ? dragOffset * 0.5 : 0
-                  
-                  if (position === 0) {
-                    return `translateX(${dragAdjustment}px)`
-                  } else if (position === -1) {
-                    return `translateX(calc(-120% + ${dragAdjustment}px))`
-                  } else if (position === 1) {
-                    return `translateX(calc(120% + ${dragAdjustment}px))`
-                  } else if (position < -1) {
-                    return `translateX(calc(-200% + ${dragAdjustment}px))`
-                  } else {
-                    return `translateX(calc(200% + ${dragAdjustment}px))`
-                  }
+                  if (position === 0) return `translateX(${dragAdjustment}px)`
+                  if (position === -1) return `translateX(calc(-120% + ${dragAdjustment}px))`
+                  if (position === 1) return `translateX(calc(120% + ${dragAdjustment}px))`
+                  if (position < -1) return `translateX(calc(-200% + ${dragAdjustment}px))`
+                  return `translateX(calc(200% + ${dragAdjustment}px))`
                 }
 
                 return (
                   <div
-                    key={`${movie.title}-${index}`}
-                    className={`absolute ${getWidth()} transition-all ${isDragging ? 'duration-0' : 'duration-700 ease-out'}`}
+                    key={absoluteIndex}
+                    className={`absolute ${getWidth()} transition-all ${isDragging ? "duration-0" : "duration-700 ease-out"}`}
                     style={{
                       transform: getTransform(),
-                      transformStyle: 'preserve-3d',
+                      transformStyle: "preserve-3d",
                       opacity: isVisible ? 1 : 0,
                       zIndex: position === 0 ? 20 : 10 - Math.abs(position),
-                      pointerEvents: isVisible ? 'auto' : 'none',
+                      pointerEvents: isVisible ? "auto" : "none",
                     }}
                     onMouseEnter={() => setHoveredMovie(movie.title)}
                     onMouseLeave={() => setHoveredMovie(null)}
                   >
-                    <PosterCard
-                      {...movie}
-                      initialRotateY={getRotation()}
-                      isCenter={position === 0}
-                    />
+                    <PosterCard {...movie} initialRotateY={getRotation()} isCenter={position === 0} />
                   </div>
                 )
               })}
             </div>
           </div>
 
-          {/* Navigation Dots */}
           <div className="flex justify-center gap-2 mt-6">
             {featuredMovies.map((_, index) => (
               <button
                 key={index}
-                onClick={() => setCurrentIndex((prev) => {
-                  const currentMod = prev % featuredMovies.length
+                onClick={() => {
+                  const currentMod = currentIndex % featuredMovies.length
                   const diff = (index - currentMod + featuredMovies.length) % featuredMovies.length
-                  return prev + diff
-                })}
+                  setCurrentIndex((prev) => prev + diff)
+                }}
                 className={`h-2 rounded-full transition-all duration-500 ease-out ${
                   index === currentIndex % featuredMovies.length
-                    ? 'bg-primary w-8'
-                    : 'bg-muted-foreground/30 w-2 hover:bg-muted-foreground/50'
+                    ? "bg-primary w-8"
+                    : "bg-muted-foreground/30 w-2 hover:bg-muted-foreground/50"
                 }`}
                 aria-label={`Go to slide ${index + 1}`}
               />
@@ -267,9 +326,8 @@ export default function PosterGallery() {
             </a>
           </div>
 
-          {/* Keyboard hint - simple text */}
           <div className="mt-6 text-center text-xs text-muted-foreground/40">
-            <span>← → to navigate • ESC to {isAutoplayPaused ? 'play' : 'pause'}</span>
+            <span>← → to navigate • ESC to {isAutoplayPaused ? "play" : "pause"}</span>
           </div>
         </div>
       </section>

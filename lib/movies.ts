@@ -14,33 +14,43 @@ export const movies: Movie[] = [
 
   {
     title: "Now You See Me: Now You Don't",
-    year: "Fall 2026",
-    runtime: "TBD",
+    year: "2025",
+    runtime: "1h 53m",
     rating: "PG-13",
-    description: "Time’s ticking.. and so is the case.",
-    posterUrl: "https://static1.srcdn.com/wordpress/wp-content/uploads/2025/05/now-you-see-me-now-you-dont-film-poster.jpg", // Replace with real
-    url: "/movies/the-brief-case",
-    releaseDate: "2026-09-01",
+    description: "The original Four Horsemen magicians reunite with a new generation to pull off a globe-spanning diamond heist against a powerful criminal empire.",
+    posterUrl: "/posters/nysm-nyd.jpg" , // Replace with real
+    url: "/movies/nysm-nyd",
+    releaseDate: "2025-11-14",
   },
   {
     title: "Resident Alien",
-    year: "Winter 2026",
-    runtime: "TBD",
-    rating: "TBD",
-    description: "",
-    posterUrl: "https://image.tmdb.org/t/p/original/uJMbW9d1QqoJWmGOqJv8mAbegac.jpg", // Replace with real
-    url: "/movies/coming-soon",
-    releaseDate: "2026-12-01",
+    year: "2021",
+    runtime: "44m",
+    rating: "TV-14",
+    description: "An alien posing as a small-town doctor struggles with his mission while building bonds with the quirky locals.",
+    posterUrl: "/posters/resident-alien.jpg" , // Replace with real
+    url: "/tv/resident-alien",
+    releaseDate: "2021-01-27",
   },
   {
     title: "Young Sheldon",
-    year: "Spring 2027",
-    runtime: "TBD",
+    year: "2017",
+    runtime: "21m",
     rating: "TBD",
-    description: "",
-    posterUrl: "https://image.tmdb.org/t/p/original/m2afrpLRua2J4152Q9SVnGH7KpV.jpg", // Replace with real
-    url: "/movies/coming-soon",
-    releaseDate: "2027-02-01",
+    description: "A young genius navigates school and family life as a child prodigy in East Texas.",
+    posterUrl: "/posters/young-sheldon.jpg" , // Replace with real
+    url: "/tv/young-sheldon",
+    releaseDate: "2017-09-25",
+  },
+    {
+    title: "Rush Hour",
+    year: "1998",
+    runtime: "1h 38m",
+    rating: "PG-13",
+    description: "A by-the-book Hong Kong detective is stuck with a loudmouthed LAPD cop and must overcome their chaos to save a kidnapped girl.",
+    posterUrl: "/posters/rush-hour.jpg" , // Replace with real
+    url: "/movies/rush-hour",
+    releaseDate: "1998-09-18",
   },
   // ADD ALL YOUR MOVIES HERE — the more the better!
   // Example older one:
