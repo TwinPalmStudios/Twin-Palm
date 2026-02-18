@@ -237,7 +237,7 @@ export default function PosterGallery() {
       <section className="relative w-full py-16 overflow-hidden">
         <div className="container px-4 md:px-6 relative z-10">
           <div className="text-center mb-10">
-            <h2 className="text-4xl md:text-5xl font-bold tracking-tight">Featured Films</h2>
+            <h2 className="text-4xl md:text-5xl font-bold tracking-tight">Featured</h2>
             <p className="mt-4 text-lg text-muted-foreground">Our latest and upcoming cinematic works</p>
           </div>
 
